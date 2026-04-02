@@ -5,16 +5,18 @@ from src.logistic_models import (
     predict_all_horizons,
     evaluate_predictions
     )
+from src.data_visualization import plot_target_balance
 
 
 def main():
     # 1. load data
-    train_df = pd.read_csv("fire-two-u/data/train_split.csv")
-    valid_df = pd.read_csv("fire-two-u/data/val_split.csv")
-    test_df = pd.read_csv("fire-two-u/data/test_clean.csv")
+    train_df = pd.read_csv("data/train_split.csv")
+    valid_df = pd.read_csv("data/val_split.csv")
+    test_df = pd.read_csv("data/test_clean.csv")
     # 2. create labels
     train_df = create_horizon_label(train_df)
     valid_df = create_horizon_label(valid_df)
+
     # 3. define feature_cols and target_cols
     feature_cols = [
         c for c in train_df.columns
@@ -31,6 +33,7 @@ def main():
     # feature_cols = train_df[feature_cols].select_dtypes(
     #     include="number").columns.tolist()
     target_cols = ["y_12", "y_24", "y_48", "y_72"]
+    plot_target_balance(train_df, target_cols)
     # 4. train models
     models = train_all_logistic_models(
         train_df, valid_df, feature_cols, target_cols)
