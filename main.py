@@ -11,6 +11,7 @@ from src.data_visualization import (
 )
 
 
+
 def main():
     # 1. load data
     train_df = pd.read_csv("data/train_split.csv")
@@ -47,20 +48,15 @@ def main():
     plot_correlation_heatmap(train_df, feature_cols)
     plot_correlation_heatmap(train_df, cols_for_heatmap)
     # 4. train models
-    models = train_all_logistic_models(
-        train_df, valid_df, feature_cols, target_cols)
+    models = train_all_logistic_models(train_df, valid_df, feature_cols, target_cols)
     # 5. predict
     predictions = predict_all_horizons(models, valid_df, feature_cols)
     # 6. evaluate
     model_evaluation = {}
     for each_key in predictions.keys():
         y_prob = predictions[each_key]
-        auc, report = evaluate_predictions(
-            valid_df[each_key], y_prob)
-        model_evaluation[each_key] = {
-            "auc": auc,
-            "report": report
-        }
+        auc, report = evaluate_predictions(valid_df[each_key], y_prob)
+        model_evaluation[each_key] = {"auc": auc, "report": report}
 
         print(f"\n=== {each_key} ===")
         print("AUC:", auc)
