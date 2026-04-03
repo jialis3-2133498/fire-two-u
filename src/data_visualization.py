@@ -28,13 +28,20 @@ def plot_feature_histograms(df: pd.DataFrame, feature_cols: list[str]):
     pass
 
 
-# def plot_correlation_heatmap(df: pd.DataFrame, feature_cols: list[str]):
-#     fig, ax = plt.subplots(figsize=(8, 6))
-#     corr = df[feature_cols].corr()
-#     im = ax.imshow(corr.to_numpy(), cmap="coolwarm")
-#     ax.set_xticks(range(len(corr.columns)))
-#     ax.set_xticklabels(corr.columns, rotation=45, ha="right")
-#     ax.set_yticks()
+def plot_correlation_heatmap(df: pd.DataFrame, feature_cols: list[str]):
+    fig, ax = plt.subplots(figsize=(8, 6))
+    corr = df[feature_cols].corr()
+    im = ax.imshow(corr.to_numpy(), cmap="coolwarm")
+    ax.set_xticks(range(len(corr.columns)))
+    ax.set_xticklabels(corr.columns, rotation=45, ha="right")
+    ax.set_yticks(range(len(corr.index)))
+    ax.set_yticklabels(corr.index)
+
+    fig.colorbar(im, ax=ax)
+    plt.tight_layout()
+    plt.show()
+    plt.close(fig)
+
 
 
 def plot_auc_by_horizon(model_evaluation: dict):
