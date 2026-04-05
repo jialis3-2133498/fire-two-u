@@ -8,10 +8,14 @@ from sklearn.metrics import roc_auc_score, classification_report
 def create_horizon_label(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
-    df["y_12"] = ((df["event"] == 1) & (df["time_to_hit_hours"] <= 12)).astype(int)
-    df["y_24"] = ((df["event"] == 1) & (df["time_to_hit_hours"] <= 24)).astype(int)
-    df["y_48"] = ((df["event"] == 1) & (df["time_to_hit_hours"] <= 48)).astype(int)
-    df["y_72"] = ((df["event"] == 1) & (df["time_to_hit_hours"] <= 72)).astype(int)
+    df["y_12"] = (
+        (df["event"] == 1) & (df["time_to_hit_hours"] <= 12)).astype(int)
+    df["y_24"] = (
+        (df["event"] == 1) & (df["time_to_hit_hours"] <= 24)).astype(int)
+    df["y_48"] = (
+        (df["event"] == 1) & (df["time_to_hit_hours"] <= 48)).astype(int)
+    df["y_72"] = (
+        (df["event"] == 1) & (df["time_to_hit_hours"] <= 72)).astype(int)
 
     return df
 
@@ -48,7 +52,7 @@ def train_logistic_model(
 
     y_prob = model.predict_proba(X_valid_scaled)[:, 1]
     auc = roc_auc_score(y_valid, y_prob)
-    return model, imputer, scaler, auc
+    return model, imputer, scaler, auc, y_valid, y_prob
 
 
 def train_all_logistic_models(
@@ -58,13 +62,15 @@ def train_all_logistic_models(
         target_cols: list[str]):
     model_dict = {}
     for each_target_col in target_cols:
-        model, imputer, scaler, auc = train_logistic_model(
+        model, imputer, scaler, auc, y_valid, y_prob = train_logistic_model(
             train_df, valid_df, feature_cols, each_target_col)
         model_dict[each_target_col] = {
             "model": model,
             "imputer": imputer,
             "scaler": scaler,
-            "auc": auc
+            "auc": auc,
+            "y_valid": y_valid,
+            "y_prob": y_prob
         }
     return model_dict
 
