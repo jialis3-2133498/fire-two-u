@@ -187,7 +187,7 @@ def plot_correlation_heatmap(
         show: bool = True):
     fig, ax = plt.subplots(figsize=(8, 6))
     corr = df[feature_cols].corr()
-    im = ax.imshow(corr.to_numpy(), cmap="coolwarm")
+    im = ax.imshow(corr.to_numpy(), cmap="Greens", aspect="auto")
     ax.set_xticks(range(len(corr.columns)))
     ax.set_xticklabels(corr.columns, rotation=45, ha="right")
     ax.set_yticks(range(len(corr.index)))
