@@ -17,7 +17,7 @@ def plot_target_balance(
     fig, ax = plt.subplots()
     for i, v in enumerate(positive_rates):
         ax.text(i, v + 0.01, f"{v:.1%}", ha="center")
-    ax.bar(labels, positive_rates)
+    ax.bar(labels, positive_rates, color="forestgreen")
     ax.set_title("Positive Class Rate Across Horizon")
     ax.set_xlabel("Prediction Horizon")
     ax.set_ylabel("Positive Rate")
@@ -342,7 +342,10 @@ def plot_random_forest_feature_importance(
     importance_df = importance_df.sort_values(
         by="importance", ascending=False).head(top_n)
     fig, ax = plt.subplots(figsize=(8, 5))
-    ax.barh(importance_df["feature"], importance_df["importance"])
+    ax.barh(
+        importance_df["feature"],
+        importance_df["importance"],
+        color="forestgreen")
     ax.invert_yaxis()
 
     ax.set_title(f"Top {top_n} Random Forest Feature Importances (24h)")
